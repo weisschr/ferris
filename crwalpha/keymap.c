@@ -108,15 +108,24 @@ enum combos {
     END_COMBO,
     TEAMS_MUTE,
     TEAMS_VIDTOG,
+    CHROME_COMBO,
+    MYCOMPUTER_COMBO,
+    CONTROLPAN_COMBO,
+    EDGE_COMBO,
+    VSCODE_COMBO,
+    NOTEPADPP_COMBO,
     COMBO_LENGTH
 };
 
 enum custom_keycodes {
     BROWSWEROPEN = SAFE_RANGE,
     CONTROLPAN,
+    NOTEPADPP,
+    MSEDGE,
+    VSCODE,
+    MYCOMPUTER,
     ONESHOT_SYM_LSHIFT,
     ONESHOT_SYM_RSHIFT,
-    MYCOMPUTER,
 };
 
 // Functions for bilateral combos
@@ -242,6 +251,16 @@ combo_t key_combos[] = {
 
 [CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
 [CAPSWORD_COMBO]     = COMBO(capsword_combo, CW_TOGG),
+
+//------------ Macro combos
+
+[CHROME_COMBO]     = COMBO(chrome_combo, BROWSWEROPEN),
+[MYCOMPUTER_COMBO] = COMBO(mycomputer_combo, MYCOMPUTER),
+[CONTROLPAN_COMBO] = COMBO(controlpan_combo, CONTROLPAN),
+[EDGE_COMBO]       = COMBO(edge_combo, MSEDGE),
+[VSCODE_COMBO]     = COMBO(vscode_combo, VSCODE),
+[NOTEPADPP_COMBO]  = COMBO(notepadpp_combo, NOTEPADPP),
+
 };
 
 // end combos
@@ -376,26 +395,44 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case BROWSWEROPEN:
         if (record->event.pressed) {
-            SEND_STRING(SS_DOWN(X_LGUI));
-            SEND_STRING(SS_TAP(X_R));
-            SEND_STRING(SS_UP(X_LGUI));
-            SEND_STRING("CHROME\n");
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                SEND_STRING("CHROME\n");
         }
         break;
     case CONTROLPAN:
         if (record->event.pressed) {
-            SEND_STRING(SS_DOWN(X_LGUI));
-            SEND_STRING(SS_TAP(X_R));
-            SEND_STRING(SS_UP(X_LGUI));
-            SEND_STRING("CONTROL\n");
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                SEND_STRING("Control" SS_TAP(X_ENTER));
         }
         break;
     case MYCOMPUTER:
         if (record->event.pressed) {
-            SEND_STRING(SS_DOWN(X_LGUI));
-            SEND_STRING(SS_TAP(X_R));
-            SEND_STRING(SS_UP(X_LGUI));
-            SEND_STRING("SHELL:MyComputerFolder\n");
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                SEND_STRING("Shell:MyComputerFolder" SS_TAP(X_ENTER));
+        }
+        break;
+    case VSCODE:
+        if (record->event.pressed) {
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                SEND_STRING("CODE" SS_TAP(X_ENTER));
+        }
+        break;
+    case MSEDGE:
+        if (record->event.pressed) {
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                SEND_STRING("MICROSOFT-EDGE:" SS_TAP(X_ENTER));
+        }
+        break;
+    case NOTEPADPP:
+        if (record->event.pressed) {
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                SEND_STRING("NOTEPAD++" SS_TAP(X_ENTER));
         }
         break;
     case ONESHOT_SYM_RSHIFT:
@@ -510,21 +547,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /*  Layer 4 Mouse
 *   _____________________________________________________________________     _____________________________________________________________________
-*  | KC_TRNS     | NEW-TAB     | KC_TRNS     | KC_TRNS     | UP          |   | PGUP        | WHEEL LEFT  | MOUSE UP    | WHEEL RIGHT | KC_TRNS     |
+*  | BOOKMRKMGR  | NEW-TAB     | LAST-TAB    | HOME PG     | UP          |   | PGUP        | WHEEL LEFT  | MOUSE UP    | WHEEL RIGHT | VOL UP      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_TRNS     | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| DOWN        |   | PGDN        | MOUSE LEFT  | MOUSE DOWN  | MOUSE RIGHT | KC_TRNS     |
+*  | BOOKMARK    | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| DOWN        |   | PGDN        | MOUSE LEFT  | MOUSE DOWN  | MOUSE RIGHT | VOL DN      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_TRNS     | NEW-WIN     | INCOG       | LEFT        | RIGHT       |   | HOME        | WHEEL UP    | WHEEL DOWN  | END         | KC_TRNS     |
+*  | BOOKMARKBAR | NEW-WIN     | INCOG       | LEFT        | RIGHT       |   | HOME        | WHEEL UP    | WHEEL DOWN  | END         | MUTE        |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
-*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
+*                                            | TAB/CTRL    | KC_TRNS     |   | KC_TRNS     | BCKSP/CTRL  |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_MOUSE] = LAYOUT_split_3x5_2(
-    KC_TRNS,   C(KC_T),     KC_TRNS,     KC_TRNS,    KC_UP,     /*-*/ KC_PGUP ,  KC_MS_WH_LEFT,  KC_MS_UP,      KC_MS_WH_RIGHT ,   KC_TRNS,
-    KC_TRNS,   KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,       KC_TRNS,
-    KC_TRNS,   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  KC_MS_WH_UP,    KC_MS_WH_DOWN, KC_END,            KC_TRNS,
-                                         KA_LCLTB,    KC_TRNS,   /*-*/ KC_TRNS,   KA_RCLBP
+    RCS(KC_O),    C(KC_T),    RCS(KC_T),   A(KC_HOME), KC_UP,     /*-*/ KC_PGUP ,  KC_MS_WH_LEFT,  KC_MS_UP,      KC_MS_WH_RIGHT,   KC_VOLU,
+    C(KC_D),     KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,      KC_VOLD,
+    RCS(KC_B),   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  KC_MS_WH_UP,    KC_MS_WH_DOWN, KC_END,           KC_MUTE,
+                                           KA_LCLTB,   KC_TRNS,   /*-*/ KC_TRNS,   KA_RCLBP
   )
 };
 
