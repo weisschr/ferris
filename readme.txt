@@ -1,3 +1,5 @@
-for the blok and other rp2040
+For the blok and other rp2040 for QMK.
 
-Set config.h master to left and right and flash independently
+This needs to be copied into the correct keymap directory under the Ferris.
+
+qmk_firmware/keyboards/ferris/keymaps

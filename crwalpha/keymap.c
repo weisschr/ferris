@@ -7,9 +7,7 @@
 
 // Thumbs
 #define KA_LSFP   LSFT_T(KC_SPC)
-#define KA_LCLTB  LCTL_T(KC_TAB)
 #define KA_RSFEN  RSFT_T(KC_ENT)
-#define KA_RCLBP  RCTL_T(KC_BSPC)
 
 // Fingers
 #define KC_LCTRL_F    MT(MOD_LCTL, KC_F)
@@ -20,7 +18,6 @@
 #define KC_RGUI_Y     MT(MOD_RGUI, KC_Y)
 
 // DUO
-
 #define KC_LSHCTRL_G  MT(MOD_LCTL | MOD_LSFT, KC_G)
 #define KC_RSHCTRL_H  MT(MOD_RCTL | MOD_RSFT, KC_H)
 #define KC_LSHALT_B   MT(MOD_LALT | MOD_LSFT, KC_B)
@@ -30,17 +27,14 @@
 #define KC_RCTRLALT_U MT(MOD_RCTL | MOD_RALT, KC_U)
 
 // MEH
-
 #define KC_LMEH_D     MT(MOD_LCTL | MOD_LALT | MOD_LSFT, KC_D)
 #define KC_RMEH_K     MT(MOD_RCTL | MOD_RALT | MOD_RSFT, KC_K)
 
 // HYPER
-
 #define KC_LHYPR_E    MT(MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI, KC_E)
 #define KC_RHYPR_I    MT(MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI, KC_I)
 
 // APPS Mapping
-
 #define KA_LINKEDIN HYPR(KC_L)
 #define KA_OUTLOOK  HYPR(KC_O)
 #define KA_TEAMS    HYPR(KC_T)
@@ -114,6 +108,8 @@ enum combos {
     EDGE_COMBO,
     VSCODE_COMBO,
     NOTEPADPP_COMBO,
+    BOOT_LEFT,
+    BOOT_RIGHT,
     COMBO_LENGTH
 };
 
@@ -194,13 +190,16 @@ const uint16_t PROGMEM teams_mute[]       = {KC_LCTRLALT_R, KC_RCTRLALT_U, COMBO
 const uint16_t PROGMEM teams_vidtog[]     = {KC_LGUI_T, KC_RGUI_Y, COMBO_END};
 
 // Macro Combos
-
 const uint16_t PROGMEM chrome_combo[]     = {KC_C, KC_H, COMBO_END};
 const uint16_t PROGMEM mycomputer_combo[] = {KC_C, KC_Y, COMBO_END};
 const uint16_t PROGMEM controlpan_combo[] = {KC_C, KC_N, COMBO_END};
 const uint16_t PROGMEM edge_combo[]       = {KC_C, KC_J, COMBO_END};
 const uint16_t PROGMEM vscode_combo[]     = {KC_C, KC_U, COMBO_END};
 const uint16_t PROGMEM notepadpp_combo[]  = {KC_C, KC_M, COMBO_END};
+
+// Boot combos
+const uint16_t PROGMEM boot_left_combo[]  = {KC_Q, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM boot_right_combo[] = {KC_RGUI_Y, KC_P, COMBO_END};
 
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
@@ -244,6 +243,14 @@ combo_t key_combos[] = {
 [PAGEDN_COMBO]       = COMBO(pagedn_combo, KC_PGDN),
 [HOME_COMBO]         = COMBO(home_combo, KC_HOME),
 [END_COMBO]          = COMBO(end_combo, KC_END),
+
+//-------------------------------------------------------------------------------
+
+[BOOT_LEFT] = COMBO(boot_left_combo,QK_BOOT),
+[BOOT_RIGHT] = COMBO(boot_right_combo,QK_BOOT),
+
+//-------------------------------------------------------------------------------
+
 [TEAMS_MUTE]         = COMBO(teams_mute, RCS(KC_M)),
 [TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
 
