@@ -11,7 +11,9 @@
 
 // Fingers
 #define KC_LCTRL_F    MT(MOD_LCTL, KC_F)
+#define KC_LCTRL_4    MT(MOD_LCTL, KC_4)
 #define KC_RCTRL_J    MT(MOD_RCTL, KC_J)
+#define KC_RCTRL_7    MT(MOD_RCTL, KC_7)
 #define KC_LALT_V     MT(MOD_LALT, KC_V)
 #define KC_RALT_M     MT(MOD_RALT, KC_M)
 #define KC_LGUI_T     MT(MOD_LGUI, KC_T)
@@ -508,7 +510,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUMBSYM] = LAYOUT_split_3x5_2(
     KC_EXLM,      KC_AT,            KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,      KC_ASTR,   KC_LPRN,        KC_RPRN,
-    KC_1,         KC_2,             KC_3,          KC_4,          KC_5,    /*-*/ KC_6,         KC_7,         KC_8,      KC_9,           KC_0,
+    KC_1,         KC_2,             KC_3,          KC_LCTRL_4,    KC_5,    /*-*/ KC_6,         KC_RCTRL_7,   KC_8,      KC_9,           KC_0,
     KC_GRV,       KC_BSLS,          KC_EQL,        KC_MINS,       KC_UNDS, /*-*/ KC_QUOT,      KC_SCLN,      KC_TRNS,   KC_TRNS,        KC_TRNS,
                                                    KC_TRNS,       KC_TRNS, /*-*/ KC_TRNS,      KC_TRNS
   ),
