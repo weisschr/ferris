@@ -48,8 +48,8 @@
 #define KA_SNIP     SGUI(KC_S)
 #define KA_CLIPBRD  RGUI(KC_V)
 
-const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, KC_A, KC_S, KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, KC_Z, KC_X, KC_C, KC_LALT_V, KC_LSHALT_B, KA_LCLTB, KA_LSFP};
-const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, KC_O, KC_P, KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, KC_L, KC_SCLN, KC_RSHALT_N, KC_RALT_M, KC_COMM, KC_DOT, KC_SLSH, KA_RSFEN, KA_RCLBP};
+const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, KC_A, KC_S, KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, KC_Z, KC_X, KC_C, KC_LALT_V, KC_LSHALT_B, KC_TAB, KA_LSFP};
+const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, KC_O, KC_P, KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, KC_L, KC_SCLN, KC_RSHALT_N, KC_RALT_M, KC_COMM, KC_DOT, KC_SLSH, KA_RSFEN, KC_BSPC};
 
 
 const int rt_keylist_size = sizeof(rt_keylist) / sizeof(rt_keylist[0]);
@@ -110,6 +110,8 @@ enum combos {
     NOTEPADPP_COMBO,
     BOOT_LEFT,
     BOOT_RIGHT,
+    ONE_SHOT_CONTROL,
+    ONE_SHOT_ALT,
     COMBO_LENGTH
 };
 
@@ -122,6 +124,7 @@ enum custom_keycodes {
     MYCOMPUTER,
     ONESHOT_SYM_LSHIFT,
     ONESHOT_SYM_RSHIFT,
+    CUSTOM_LENGTH
 };
 
 // Functions for bilateral combos
@@ -190,16 +193,21 @@ const uint16_t PROGMEM teams_mute[]       = {KC_LCTRLALT_R, KC_RCTRLALT_U, COMBO
 const uint16_t PROGMEM teams_vidtog[]     = {KC_LGUI_T, KC_RGUI_Y, COMBO_END};
 
 // Macro Combos
-const uint16_t PROGMEM chrome_combo[]     = {KC_C, KC_H, COMBO_END};
-const uint16_t PROGMEM mycomputer_combo[] = {KC_C, KC_Y, COMBO_END};
-const uint16_t PROGMEM controlpan_combo[] = {KC_C, KC_N, COMBO_END};
-const uint16_t PROGMEM edge_combo[]       = {KC_C, KC_J, COMBO_END};
-const uint16_t PROGMEM vscode_combo[]     = {KC_C, KC_U, COMBO_END};
-const uint16_t PROGMEM notepadpp_combo[]  = {KC_C, KC_M, COMBO_END};
+const uint16_t PROGMEM chrome_combo[]     = {KC_C, KC_RSHCTRL_H, COMBO_END};
+const uint16_t PROGMEM mycomputer_combo[] = {KC_C, KC_RGUI_Y, COMBO_END};
+const uint16_t PROGMEM controlpan_combo[] = {KC_C, KC_RSHALT_N, COMBO_END};
+const uint16_t PROGMEM edge_combo[]       = {KC_C, KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM vscode_combo[]     = {KC_C, KC_RCTRLALT_U, COMBO_END};
+const uint16_t PROGMEM notepadpp_combo[]  = {KC_C, KC_RALT_M, COMBO_END};
 
 // Boot combos
 const uint16_t PROGMEM boot_left_combo[]  = {KC_Q, KC_LGUI_T, COMBO_END};
 const uint16_t PROGMEM boot_right_combo[] = {KC_RGUI_Y, KC_P, COMBO_END};
+
+// OSM Mods
+const uint16_t PROGMEM osm_ctrl_combo[]  = {KC_LMEH_D, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM osm_alt_combo[]   = {KC_LHYPR_E, KC_RHYPR_I, COMBO_END};
+
 
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
@@ -255,9 +263,12 @@ combo_t key_combos[] = {
 [TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
 
 //-------------------------------------------------------------------------------
-
 [CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
 [CAPSWORD_COMBO]     = COMBO(capsword_combo, CW_TOGG),
+
+//-------------------------------------------------------------------------------
+[ONE_SHOT_CONTROL]  = COMBO(osm_ctrl_combo, OSM(KC_LCTL)),
+[ONE_SHOT_ALT]      = COMBO(osm_alt_combo, OSM(KC_LALT)),
 
 //------------ Macro combos
 
@@ -403,43 +414,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case BROWSWEROPEN:
         if (record->event.pressed) {
                 SEND_STRING(SS_LGUI("r"));
-                wait_ms(500);
+                wait_ms(250);
                 SEND_STRING("CHROME\n");
         }
         break;
     case CONTROLPAN:
         if (record->event.pressed) {
                 SEND_STRING(SS_LGUI("r"));
-                wait_ms(500);
-                SEND_STRING("Control" SS_TAP(X_ENTER));
+                wait_ms(250);
+                SEND_STRING("Control\n");
         }
         break;
     case MYCOMPUTER:
         if (record->event.pressed) {
                 SEND_STRING(SS_LGUI("r"));
-                wait_ms(500);
-                SEND_STRING("Shell:MyComputerFolder" SS_TAP(X_ENTER));
+                wait_ms(250);
+                SEND_STRING("Shell:MyComputerFolder\n");
         }
         break;
     case VSCODE:
         if (record->event.pressed) {
                 SEND_STRING(SS_LGUI("r"));
-                wait_ms(500);
-                SEND_STRING("CODE" SS_TAP(X_ENTER));
+                wait_ms(250);
+                SEND_STRING("CODE\n");
         }
         break;
     case MSEDGE:
         if (record->event.pressed) {
                 SEND_STRING(SS_LGUI("r"));
-                wait_ms(500);
-                SEND_STRING("MICROSOFT-EDGE:" SS_TAP(X_ENTER));
+                wait_ms(250);
+                SEND_STRING("MICROSOFT-EDGE:\n");
         }
         break;
     case NOTEPADPP:
         if (record->event.pressed) {
                 SEND_STRING(SS_LGUI("r"));
-                wait_ms(500);
-                SEND_STRING("NOTEPAD++" SS_TAP(X_ENTER));
+                wait_ms(250);
+                SEND_STRING("NOTEPAD++\n");
         }
         break;
     case ONESHOT_SYM_RSHIFT:
@@ -568,7 +579,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     RCS(KC_O),    C(KC_T),    RCS(KC_T),   A(KC_HOME), KC_UP,     /*-*/ KC_PGUP ,  KC_MS_WH_LEFT,  KC_MS_UP,      KC_MS_WH_RIGHT,   KC_VOLU,
     C(KC_D),     KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,      KC_VOLD,
     RCS(KC_B),   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  KC_MS_WH_UP,    KC_MS_WH_DOWN, KC_END,           KC_MUTE,
-                                           KA_LCLTB,   KC_TRNS,   /*-*/ KC_TRNS,   KA_RCLBP
+                                           KC_LCTL,    KC_LCTL,   /*-*/ KC_RSFT,   KC_RCTL
   )
 };
 
