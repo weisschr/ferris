@@ -86,7 +86,6 @@ enum combos {
     APP_COMBO,
     ONESHOT_SYM_COMBO,
     ONESHOT_SYM_LSHIFT_COMBO,
-    ONESHOT_SYM_RSHIFT_COMBO,
     ONESHOT_FUNC_COMBO,
     ONESHOT_APP_COMBO,
     DEL_COMBO,
@@ -114,6 +113,10 @@ enum combos {
     BOOT_RIGHT,
     ONE_SHOT_CONTROL,
     ONE_SHOT_ALT,
+    ONE_SHOT_SHIFT,
+    MOUSE_LEFT_CLICK,
+    MOUSE_RIGHT_CLICK,
+    MOUSE_MIDDLE_CLICK,
     COMBO_LENGTH
 };
 
@@ -158,7 +161,6 @@ const uint16_t PROGMEM osl_apps_combo[] = {KC_RGUI_Y, KC_RHYPR_I, COMBO_END};
 const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RMEH_K, COMBO_END};
 const uint16_t PROGMEM osl_numb_lshift_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, COMBO_END};
-const uint16_t PROGMEM osl_numb_rshift_combo[] = {KC_S, KC_LCTRL_F, COMBO_END};
 
 const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_COMM, COMBO_END};
@@ -176,7 +178,6 @@ const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END
 const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 
 const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
-const uint16_t PROGMEM ins_combo[]        = {KC_LHYPR_E, KC_LGUI_T, COMBO_END};
 
 const uint16_t PROGMEM caplock_combo[]    = {KC_Z, KC_X, KC_C,  COMBO_END};
 const uint16_t PROGMEM capsword_combo[]   = {KC_C, KC_LSHALT_B, COMBO_END};
@@ -209,13 +210,20 @@ const uint16_t PROGMEM boot_right_combo[] = {KC_RGUI_Y, KC_P, COMBO_END};
 // OSM Mods
 const uint16_t PROGMEM osm_ctrl_combo[]  = {KC_LMEH_D, KC_RMEH_K, COMBO_END};
 const uint16_t PROGMEM osm_alt_combo[]   = {KC_LHYPR_E, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM osm_shift_combo[] = {KC_C, KC_COMM, COMBO_END};
 
+//Mouse combos
+const uint16_t PROGMEM left_mouse_combo[]   = {KC_S, KC_LCTRL_F, COMBO_END};
+const uint16_t PROGMEM right_mouse_combo[]  = {KC_W, KC_LCTRLALT_R, COMBO_END};
+const uint16_t PROGMEM middle_mouse_combo[] = {KC_LHYPR_E, KC_LGUI_T, COMBO_END};
 
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
 // Combo assignments
 
 combo_t key_combos[] = {
+
+//------------- Symbol combos
 
 [DOUBLEQ_COMBO]      = COMBO(doubleq_combo, KC_DQUO),
 [SINGLEQ_COMBO]      = COMBO(singleq_combo, KC_QUOT),
@@ -226,20 +234,19 @@ combo_t key_combos[] = {
 [LCURLY_COMBO]       = COMBO(lcurly_combo, KC_LCBR),
 [RCURLY_COMBO]       = COMBO(rcurly_combo, KC_RCBR),
 
-//-------------------------------------------------------------------------------
+//------------- Layer combos
 
 [APP_COMBO]          = COMBO(apps_combo, TG(_APPCONTROL)),
 [NUMB_COMBO]         = COMBO(numb_combo, TG(_NUMBSYM)),
 [FUNC_COMBO]         = COMBO(func_combo, TG(_FUNCTION)),
 [ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
 [ONESHOT_SYM_LSHIFT_COMBO]  = COMBO(osl_numb_lshift_combo, ONESHOT_SYM_LSHIFT),
-[ONESHOT_SYM_RSHIFT_COMBO]  = COMBO(osl_numb_rshift_combo, ONESHOT_SYM_RSHIFT),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
 [DEFAULT_COMBO]      = COMBO(default_combo, TO(_ALPHA)),
 [MOUSE_COMBO]        = COMBO(mouse_combo, TG(_MOUSE)),
 
-//-------------------------------------------------------------------------------
+//------------- Extras
 
 [LESC_COMBO]         = COMBO(lesc_combo, KC_ESC),
 [DEL_COMBO]          = COMBO(del_combo, KC_DEL),
@@ -254,23 +261,26 @@ combo_t key_combos[] = {
 [HOME_COMBO]         = COMBO(home_combo, KC_HOME),
 [END_COMBO]          = COMBO(end_combo, KC_END),
 
-//-------------------------------------------------------------------------------
+//------------- Boot combos
 
 [BOOT_LEFT] = COMBO(boot_left_combo,QK_BOOT),
 [BOOT_RIGHT] = COMBO(boot_right_combo,QK_BOOT),
 
-//-------------------------------------------------------------------------------
+//------------- Teams toggles
 
 [TEAMS_MUTE]         = COMBO(teams_mute, RCS(KC_M)),
 [TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
 
-//-------------------------------------------------------------------------------
+//------------- Cap combos
+
 [CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
 [CAPSWORD_COMBO]     = COMBO(capsword_combo, CW_TOGG),
 
-//-------------------------------------------------------------------------------
+//------------- One shot modifiers
+
 [ONE_SHOT_CONTROL]  = COMBO(osm_ctrl_combo, OSM(KC_LCTL)),
 [ONE_SHOT_ALT]      = COMBO(osm_alt_combo, OSM(KC_LALT)),
+[ONE_SHOT_SHIFT]    = COMBO(osm_shift_combo, OSM(KC_LSFT)),
 
 //------------ Macro combos
 
@@ -280,6 +290,12 @@ combo_t key_combos[] = {
 [EDGE_COMBO]       = COMBO(edge_combo, MSEDGE),
 [VSCODE_COMBO]     = COMBO(vscode_combo, VSCODE),
 [NOTEPADPP_COMBO]  = COMBO(notepadpp_combo, NOTEPADPP),
+
+// Mouse combos
+
+[MOUSE_LEFT_CLICK]   = COMBO(left_mouse_combo, KC_MS_BTN1),
+[MOUSE_RIGHT_CLICK]  = COMBO(right_mouse_combo, KC_MS_BTN2),
+[MOUSE_MIDDLE_CLICK] = COMBO(middle_mouse_combo, KC_MS_BTN3),
 
 };
 
@@ -581,7 +597,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     RCS(KC_O),    C(KC_T),    RCS(KC_T),   A(KC_HOME), KC_UP,     /*-*/ KC_PGUP ,  KC_MS_WH_LEFT,  KC_MS_UP,      KC_MS_WH_RIGHT,   KC_VOLU,
     C(KC_D),     KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,      KC_VOLD,
     RCS(KC_B),   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  KC_MS_WH_UP,    KC_MS_WH_DOWN, KC_END,           KC_MUTE,
-                                           KC_LCTL,    KC_LSFT,   /*-*/ KC_RSFT,   KC_RCTL
+                                           KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS
   )
 };
 
