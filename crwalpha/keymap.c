@@ -49,6 +49,21 @@
 #define KA_EXCEL    HYPR(KC_X)
 #define KA_SNIP     SGUI(KC_S)
 #define KA_CLIPBRD  RGUI(KC_V)
+#define KA_LOCK     RGUI(KC_L)
+
+// Behavior
+#define KA_CADEL    C(A(KC_DEL))
+
+// Browser
+
+#define CR_NTAB     C(KC_T)
+#define CR_NINCOG   RCS(KC_T)
+#define CR_HOME     A(KC_HOME)
+#define CR_BKMRKS   RCS(KC_O)
+#define CR_BKMRK    C(KC_D)
+#define CR_BKBAR    RCS(KC_B)
+#define CR_NEWWIN   C(KC_N)
+#define CR_INGWIN   RCS(KC_N)
 
 const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_E, KC_R, KC_LGUI_T, KC_A, KC_S, KC_D, KC_LCTRL_F, KC_LSHCTRL_G, KC_Z, KC_X, KC_C, KC_LALT_V, KC_B, KC_TAB, KA_LSFP};
 const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_RGUI_Y, KC_U, KC_I, KC_O, KC_P, KC_RSHCTRL_H, KC_RCTRL_J, KC_K, KC_L, KC_SCLN, KC_N, KC_RALT_M, KC_COMM, KC_DOT, KC_SLSH, KA_RSFEN, KC_BSPC};
@@ -114,6 +129,9 @@ enum combos {
     ONE_SHOT_CONTROL,
     ONE_SHOT_ALT,
     ONE_SHOT_SHIFT,
+    ONE_SHOT_GUI,
+    ONE_SHOT_MEH,
+    ONE_SHOT_HYPER,
     MOUSE_LEFT_CLICK,
     MOUSE_RIGHT_CLICK,
     MOUSE_MIDDLE_CLICK,
@@ -209,8 +227,11 @@ const uint16_t PROGMEM boot_right_combo[] = {KC_RGUI_Y, KC_P, COMBO_END};
 
 // OSM Mods
 const uint16_t PROGMEM osm_ctrl_combo[]  = {KC_D, KC_K, COMBO_END};
-const uint16_t PROGMEM osm_alt_combo[]   = {KC_E, KC_I, COMBO_END};
-const uint16_t PROGMEM osm_shift_combo[] = {KC_C, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osm_alt_combo[]   = {KC_C, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osm_shift_combo[] = {KC_S, KC_L, COMBO_END};
+const uint16_t PROGMEM osm_meh_combo[]   = {KC_X, KC_DOT, COMBO_END};
+const uint16_t PROGMEM osm_hyper_combo[] = {KC_W, KC_O, COMBO_END};
+const uint16_t PROGMEM osm_gui_combo[]   = {KC_E, KC_I, COMBO_END};
 
 //Mouse combos
 const uint16_t PROGMEM left_mouse_combo[]   = {KC_S, KC_LCTRL_F, COMBO_END};
@@ -278,9 +299,12 @@ combo_t key_combos[] = {
 
 //------------- One shot modifiers
 
-[ONE_SHOT_CONTROL]  = COMBO(osm_ctrl_combo, OSM(KC_LCTL)),
-[ONE_SHOT_ALT]      = COMBO(osm_alt_combo, OSM(KC_LALT)),
-[ONE_SHOT_SHIFT]    = COMBO(osm_shift_combo, OSM(KC_LSFT)),
+[ONE_SHOT_CONTROL] = COMBO(osm_ctrl_combo,  OSM(KC_LCTL)),
+[ONE_SHOT_ALT]     = COMBO(osm_alt_combo,   OSM(KC_LALT)),
+[ONE_SHOT_SHIFT]   = COMBO(osm_shift_combo, OSM(KC_LSFT)),
+[ONE_SHOT_GUI]     = COMBO(osm_gui_combo,   OSM(KC_LGUI)),
+[ONE_SHOT_HYPER]   = COMBO(osm_hyper_combo, OSM(KC_HYPR)),
+[ONE_SHOT_MEH]     = COMBO(osm_meh_combo,   OSM(KC_MEH)),
 
 //------------ Macro combos
 
@@ -551,9 +575,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_2(
-    KC_MPLY,      KC_MSTP, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_F11,  /*-*/  KC_F12,    KC_KB_MUTE, KC_KB_VOLUME_UP, KC_KB_VOLUME_DOWN, RGUI(KC_L),
-    KC_F1,        KC_F2,   KC_F3,               KC_F4,               KC_F5,   /*-*/  KC_F6,     KC_F7,      KC_F8,           KC_F9,             KC_F10,
-    C(A(KC_DEL)), KC_LGUI, KC_LALT,             KC_LCTL,             KC_MEH,  /*-*/  KC_HYPR,   KC_RCTL,    KC_RALT,         KC_RGUI,           C(A(KC_DEL)),
+    KC_MPLY,      KC_MSTP, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_F11,  /*-*/  KC_F12,    KC_VOLU, KC_VOLD, KC_MUTE, KA_LOCK,
+    KC_F1,        KC_F2,   KC_F3,               KC_F4,               KC_F5,   /*-*/  KC_F6,     KC_F7,   KC_F8,   KC_F9,   KC_F10,
+    C(A(KC_DEL)), KC_LGUI, KC_LALT,             KC_LCTL,             KC_MEH,  /*-*/  KC_HYPR,   KC_RCTL, KC_RALT, KC_RGUI, C(A(KC_DEL)),
                                                 KC_TRNS,             KC_TRNS, /*-*/  KC_TRNS,   KC_TRNS
   ),
 
@@ -570,10 +594,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_2(
-    KC_NO,     KC_NO,  KA_LINKEDIN,  KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  KC_BRIU,     KC_BRID,    KC_NO,   KC_NO,
-    QK_BOOT,   KC_NO,  CONTROLPAN,   KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_NO,   QK_BOOT,
-    QK_REBOOT, KC_NO,  BROWSWEROPEN, KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  MYCOMPUTER, KC_NO,   QK_REBOOT,
-                                     KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,     KC_TRNS
+    KC_NO,     KC_NO, KA_EMOJIS,  KA_RUN,     KA_TEAMS, /*-*/ KA_POWERPT, KC_BRIU,    KC_BRID,     KC_NO, KC_NO,
+    QK_BOOT,   KC_NO, CONTROLPAN, KA_FILEMGR, KA_WORD,  /*-*/ KC_CALC,    KA_TASKMGR, KA_LINKEDIN, KC_NO, QK_BOOT,
+    QK_REBOOT, KC_NO, KA_CLIPBRD, KA_OUTLOOK, KA_EXCEL, /*-*/ KA_SNIP,    KC_NO,      MYCOMPUTER,  KC_NO, QK_REBOOT,
+                                  KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,    KC_TRNS
   ),
 
 
@@ -590,10 +614,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_MOUSE] = LAYOUT_split_3x5_2(
-    RCS(KC_O),    C(KC_T),    RCS(KC_T),   A(KC_HOME), KC_UP,     /*-*/ KC_PGUP ,  MS_WHLL,  KC_MS_UP,      MS_WHLR,   KC_VOLU,
-    C(KC_D),     KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,      KC_VOLD,
-    RCS(KC_B),   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  MS_WHLU,    KC_MS_WH_DOWN, KC_END,           KC_MUTE,
-                                           KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS
+    CR_BKMRKS,  CR_NTAB,    CR_NINCOG,  CR_HOME,    KC_UP,     /*-*/ KC_PGUP, MS_WHLL,    KC_MS_UP,      MS_WHLR,     KC_VOLU,
+    CR_BKMRK,   KC_MS_BTN1, KC_MS_BTN3, KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN, KC_MS_LEFT, KC_MS_DOWN,    KC_MS_RIGHT, KC_VOLD,
+    CR_BKBAR,   CR_NEWWIN,  CR_INGWIN,  KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME, MS_WHLU,    KC_MS_WH_DOWN, KC_END,      KC_MUTE,
+                                        KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS, KC_TRNS
   )
 };
 
